@@ -98,7 +98,7 @@ def get_list_tasks(list_id: int):
   exists = cursor.fetchone()
   if not exists:
     conn.close()
-    raise HTTPException(status_code=404, detail=f"list {list.name} doesn't exist")
+    raise HTTPException(status_code=404, detail=f"list with id={list_id} doesn't exist")
   cursor.execute("""
     SELECT DISTINCT t.id, t.title, tl.name, t.completed 
     FROM task_lists tl
