@@ -9,22 +9,23 @@ app = FastAPI()
 def get_lists():
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("SELECT DISTINCT name FROM task_lists;")
+  cursor.execute("SELECT id, name FROM task_lists;")
   return {"task_lists": [{"id": id, "name": name} for id, name in cursor.fetchall()]}
 
 @app.post("/lists")
 def post_lists(list: TaskList):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("SELECT ? IN (SELECT DISTINCT name FROM task_lists)", (list.name,))
-  res = cursor.fetchone()[0]
-  if res == "1":
+  cursor.execute("SELECT name FROM task_lists WHERE name = ?", (list.name,))
+  exists = cursor.fetchone()
+  if exists:
+    print(exists)
     conn.close()
     raise HTTPException(status_code=422, detail=f"list {list.name} already exists")
-  cursor.execute("INSERT INTO task_lists(name) VALUES(?)", list.name)
+  cursor.execute("INSERT INTO task_lists(name) VALUES(?)", (list.name,))
   conn.commit()
   conn.close()
-  return f"task_list {list.name} has been created"
+  return {"message": f"task_list {list.name} has been created"}
 
 @app.get("/tasks")
 def get_tasks():
@@ -43,9 +44,9 @@ def get_tasks():
 def post_lists(task: Task):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("SELECT ? IN (SELECT DISTINCT title FROM tasks);", task.title)
-  res = cursor.fetchone()[0]
-  if res == "1":
+  cursor.execute("SELECT DISTINCT title FROM tasks WHERE title = ?", (task.title,))
+  exists = cursor.fetchone()
+  if exists:
     conn.close()
     raise HTTPException(status_code=422, detail=f"task {task.title} already exists")
 
@@ -64,7 +65,7 @@ def post_lists(task: Task):
 def post_lists(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("SELECT ? IN (SELECT DISTINCT title FROM tasks)", (task.title,))
+  cursor.execute("SELECT ? IN (SELECT DISTINCT title FROM tasks)", (task_id,))
   res = cursor.fetchone()[0]
   if res == "0":
     conn.close()
