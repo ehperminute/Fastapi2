@@ -112,5 +112,5 @@ def get_list_tasks(list_id: int):
     """, (list_id,))
   rows = cursor.fetchall()
   conn.close()
-  return {f"tasks in list (id={list_id})": [{"id": id, "title": title, "list": list, "completed": completed} 
-                                            for id, title, list, completed in rows]}
+  return {f"tasks in list (id={list_id})": [{"id": id, "title": title, "list": list_name, "completed": completed} 
+                                            for id, title, list_name, completed in rows]}
