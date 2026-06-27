@@ -62,7 +62,7 @@ def post_task(task: Task):
   return f"task {task.title} has been created in list_id {task.list_id}"
 
 
-@app.put("/tasks/{id}")
+@app.put("/tasks/{task_id}")
 def put_task(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
@@ -76,7 +76,7 @@ def put_task(task_id: int):
   conn.close()
   return f"task {task_id} has been marked as completed"
 
-@app.delete("/tasks/{id}")
+@app.delete("/tasks/{task_id}")
 def delete_task(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
