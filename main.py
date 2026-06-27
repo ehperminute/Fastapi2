@@ -10,7 +10,7 @@ def get_lists():
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT DISTINCT name FROM task_lists;")
-  return {"task_lists": {"id": id, "name": name for id, name in cursor.fetchall()}}
+  return ["task_lists": {"id": id, "name": name} for id, name in cursor.fetchall()]
 
 @app.post("/lists")
 def post_lists(list: TaskList):
