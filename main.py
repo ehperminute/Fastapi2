@@ -106,5 +106,6 @@ def get_list_tasks(list_id: int):
     WHERE tl.id = ?
     ORDER BY tl.id, t.id;
     """, (list_id,))
+  conn.close()
   return {f"tasks in list (id={list_id})": [{"id": id, "title": title, "list": list, "completed": completed} 
                                             for id, title, list, completed in cursor.fetchall()]}
