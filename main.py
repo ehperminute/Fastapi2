@@ -44,15 +44,16 @@ def get_tasks():
 def post_lists(task: Task):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("SELECT DISTINCT title FROM tasks WHERE title = ?", (task.title,))
+  cursor.execute("SELECT title FROM tasks WHERE title = ?", (task.title,))
   exists = cursor.fetchone()
   if exists:
     conn.close()
     raise HTTPException(status_code=422, detail=f"task {task.title} already exists")
 
-  cursor.execute("SELECT ? IN (SELECT DISTINCT list_id FROM tasks)", (task.list_id,))
-  res = cursor.fetchone()[0]
-  if res == "0":
+  cursor.execute("SELECT id FROM task_lists WHERE id = ?", (task.list_id,))
+
+  exists = cursor.fetchone()
+  if not exists:
     conn.close()
     raise HTTPException(status_code=404, detail=f"list with id {task.list_id} doesn't exist")
   cursor.execute("INSERT INTO tasks(title, list_id, completed) VALUES(?, ?, 0)", (task.title, task.list_id))
