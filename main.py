@@ -103,7 +103,8 @@ def get_list_tasks(list_id):
     SELECT DISTINCT t.id, t.title, tl.name, t.completed 
     FROM task_lists tl
       JOIN tasks t ON t.list_id = tl.id
+    WHERE tl.id = ?
     ORDER BY tl.id, t.id;
-    """)
+    """, (list_id,))
   return {f"tasks in list (id={list_id})": [{"id": id, "title": title, "list": list, "completed": completed} 
                                             for id, title, list, completed in cursor.fetchall()]}
