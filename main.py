@@ -16,7 +16,7 @@ def get_lists():
 def post_lists(list: TaskList):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("? IN (SELECT DISTINCT name FROM task_lists;)", list.name)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT name FROM task_lists;)", list.name)
   res = cursor.fetchone()[0]
   if res == "1":
     conn.close()
@@ -43,13 +43,13 @@ def get_tasks():
 def post_lists(task: Task):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("? IN (SELECT DISTINCT title FROM tasks;)", task.title)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT title FROM tasks;)", task.title)
   res = cursor.fetchone()[0]
   if res == "1":
     conn.close()
     raise HTTPException(status_code=422, detail=f"task {task.title} already exists")
 
-  cursor.execute("? IN (SELECT DISTINCT list_id FROM tasks;)", task.list_id)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT list_id FROM tasks;)", task.list_id)
   res = cursor.fetchone()[0]
   if res == "0":
     conn.close()
@@ -64,7 +64,7 @@ def post_lists(task: Task):
 def post_lists(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("? IN (SELECT DISTINCT title FROM tasks;)", task.title)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT title FROM tasks;)", task.title)
   res = cursor.fetchone()[0]
   if res == "0":
     conn.close()
@@ -78,7 +78,7 @@ def post_lists(task_id: int):
 def post_lists(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("? IN (SELECT DISTINCT title FROM tasks;)", task.title)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT title FROM tasks;)", task.title)
   res = cursor.fetchone()[0]
   if res == "0":
     conn.close()
@@ -92,7 +92,7 @@ def post_lists(task_id: int):
 def get_list_tasks(list_id):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("? IN (SELECT DISTINCT name FROM task_lists;)", list.name)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT name FROM task_lists;)", list.name)
   res = cursor.fetchone()[0]
   if res == "0":
     conn.close()
