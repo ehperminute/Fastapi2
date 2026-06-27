@@ -81,8 +81,8 @@ def post_lists(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT title FROM tasks WHERE id = ?", (task_id,))
-  res = cursor.fetchone()[0]
-  if res == "0":
+  exists = cursor.fetchone()
+  if not exists:
     conn.close()
     raise HTTPException(status_code=404, detail=f"task with id={task_id} doesn't exist")
   cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
