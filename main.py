@@ -4,3 +4,7 @@ from database import get_connection
 
 
 app = FastAPI()
+
+@app.get("/lists")
+def get_lists():
+  conn = get_connection
