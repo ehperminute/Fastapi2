@@ -41,7 +41,7 @@ def get_tasks():
           for id, title, list, completed in cursor.fetchall()]}
 
 @app.post("/tasks")
-def post_lists(task: Task):
+def post_task(task: Task):
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT title FROM tasks WHERE title = ?", (task.title,))
@@ -91,7 +91,7 @@ def delete_task(task_id: int):
   return f"task with id={task_id} has been deleted"
 
 @app.get("/lists/{list_id}/tasks")
-def get_list_tasks(list_id):
+def get_list_tasks(list_id: int):
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT name FROM task_lists WHERE id = ?", (list_id,))
