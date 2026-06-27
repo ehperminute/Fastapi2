@@ -10,6 +10,7 @@ def get_lists():
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT id, name FROM task_lists;")
+  conn.close()
   return {"task_lists": [{"id": id, "name": name} for id, name in cursor.fetchall()]}
 
 @app.post("/lists")
@@ -37,6 +38,7 @@ def get_tasks():
       JOIN tasks t ON t.list_id = tl.id
     ORDER BY tl.id, t.id;
     """)
+  conn.close()
   return {"tasks": [{"id": id, "title": title, "list": list, "completed": completed}
           for id, title, list, completed in cursor.fetchall()]}
 
