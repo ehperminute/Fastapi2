@@ -63,7 +63,7 @@ def post_lists(task: Task):
 
 
 @app.put("/tasks/{id}")
-def post_lists(task_id: int):
+def put_task(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT title FROM tasks WHERE id = ?", (task_id,))
@@ -77,7 +77,7 @@ def post_lists(task_id: int):
   return f"task {task_id} has been marked as completed"
 
 @app.delete("/tasks/{id}")
-def post_lists(task_id: int):
+def delete_task(task_id: int):
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT title FROM tasks WHERE id = ?", (task_id,))
