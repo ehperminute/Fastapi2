@@ -41,8 +41,8 @@ def get_tasks():
     """)
   rows = cursor.fetchall()
   conn.close()
-  return {"tasks": [{"id": id, "title": title, "list": list, "completed": bool(completed)}
-          for id, title, list, completed in rows]}
+  return {"tasks": [{"id": id, "title": title, "list": list_name, "completed": bool(completed)}
+          for id, title, list_name, completed in rows]}
 
 @app.post("/tasks")
 def post_task(task: Task):
