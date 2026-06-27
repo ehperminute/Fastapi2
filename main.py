@@ -83,7 +83,7 @@ def post_lists(task_id: int):
   if res == "0":
     conn.close()
     raise HTTPException(status_code=404, detail=f"task with id={task_id} doesn't exist")
-  cursor.execute("DELETE task_lists SET completed = 1 WHERE id = ?", task.id)
+  cursor.execute("DELETE FROM tasks WHERE id = ?", task.id)
   conn.commit()
   conn.close()
   return f"task with id={task_id} has been marked deleted"
