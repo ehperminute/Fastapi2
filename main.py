@@ -16,7 +16,7 @@ def get_lists():
 def post_lists(list: TaskList):
   conn = get_connection()
   cursor = conn.cursor()
-  cursor.execute("SELECT ? IN (SELECT DISTINCT name FROM task_lists;)", list.name)
+  cursor.execute("SELECT ? IN (SELECT DISTINCT name FROM task_lists)", list.name)
   res = cursor.fetchone()[0]
   if res == "1":
     conn.close()
