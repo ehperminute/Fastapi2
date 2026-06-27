@@ -4,7 +4,6 @@ import sqlite3
 conn = sqlite3.connect("tasks.db")
 # insert all rows from csv
 cursor = conn.cursor()
-cursor.execute("drop table if exists tasks")
 cursor.execute(""" CREATE TABLE IF NOT EXISTS tasks
 (  
   id INTEGER PRIMARY KEY AUTOINCREMENT,
