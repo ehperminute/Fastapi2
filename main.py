@@ -33,7 +33,7 @@ def get_tasks():
   cursor.execute("""
     SELECT DISTINCT t.id, tl.name, t.title, t.completed 
     FROM task_lists tl
-      JOIN tasks t ON t.list_id = tl.list_id
+      JOIN tasks t ON t.list_id = tl.id
     ORDER BY tl.id, t.id;
     """)
   return {"tasks": [{"id": id, "name": name, "list": list, "completed": completed}
