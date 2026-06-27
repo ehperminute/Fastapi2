@@ -10,7 +10,7 @@ def get_lists():
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT DISTINCT name FROM task_lists;")
-  return ["task_lists": {"id": id, "name": name} for id, name in cursor.fetchall()]
+  return {"task_lists": [{"id": id, "name": name} for id, name in cursor.fetchall()]}
 
 @app.post("/lists")
 def post_lists(list: TaskList):
@@ -36,8 +36,8 @@ def get_tasks():
       JOIN tasks t ON t.list_id = tl.list_id
     ORDER BY tl.id, t.id;
     """)
-  return [{"tasks": "id": id, "name": name, "list": list, "completed": completed}
-          for id, name, list, completed in cursor.fetchall()]
+  return {"tasks": [{"id": id, "name": name, "list": list, "completed": completed}
+          for id, name, list, completed in cursor.fetchall()]}
 
 @app.post("/tasks")
 def post_lists(task: Task):
