@@ -95,8 +95,8 @@ def get_list_tasks(list_id):
   conn = get_connection()
   cursor = conn.cursor()
   cursor.execute("SELECT name FROM task_lists WHERE id = ?", (list_id,))
-  res = cursor.fetchone()[0]
-  if res == "0":
+  exists = cursor.fetchone()
+  if not exists:
     conn.close()
     raise HTTPException(status_code=404, detail=f"list {list.name} doesn't exist")
   cursor.execute("""
